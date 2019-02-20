@@ -12,7 +12,7 @@ COPY Degrees(DegreeId, Dept, DegreeDescription, TotalECTS) FROM '/home/student/D
 COPY Students(StudentId, StudentName, Address, BirthyearStudent, Gender) FROM '/home/ubuntu/data/Students.table' DELIMITER ',' CSV HEADER;
 COPY StudentRegistrationsToDegrees(StudentRegistrationId, StudentId, DegreeId, RegistrationYear) FROM '/home/ubuntu/data/StudentRegistrationsToDegrees.table' DELIMITER ',' CSV HEADER;
 COPY Teachers(TeacherId, TeacherName, Address, BirthyearTeacher, Gender) FROM '/home/ubuntu/data/Teachers.table' DELIMITER ',' CSV HEADER;
-COPY Courses(CourseId, CourseName, CourseDescription,DegreeId) FROM '/home/ubuntu/data/Courses.table' DELIMITER ',' CSV HEADER;
+COPY Courses(CourseId, CourseName, CourseDescription,DegreeId,ECTS) FROM '/home/ubuntu/data/Courses.table' DELIMITER ',' CSV HEADER;
 COPY CourseOffers(CourseOfferId, CourseId, Year, Quartile) FROM '/home/ubuntu/data/CourseOfferId.table' DELIMITER ',' CSV HEADER;
 COPY TeacherAssignmentsToCourses(CourseOfferId, TeacherId) FROM '/home/ubuntu/data/TeacherAssignments.table' DELIMITER ',' CSV HEADER;
 COPY StudentAssistants(CourseOfferId, StudentRegistrationId) FROM '/home/student/Downloads/tables-500/StudentAssistants.table' DELIMITER ',' CSV HEADER;
