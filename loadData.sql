@@ -9,13 +9,13 @@
 -- Example:
 
 COPY Degrees(DegreeId, Dept, DegreeDescription, TotalECTS) FROM '/home/student/Downloads/tables-500/Degrees.table' DELIMITER ',' CSV HEADER;
-COPY Students(StudentId, StudentName, Address, BirthyearStudent, Gender) FROM '/home/ubuntu/data/Students.table' DELIMITER ',' CSV HEADER;
-COPY StudentRegistrationsToDegrees(StudentRegistrationId, StudentId, DegreeId, RegistrationYear) FROM '/home/ubuntu/data/StudentRegistrationsToDegrees.table' DELIMITER ',' CSV HEADER;
-COPY Teachers(TeacherId, TeacherName, Address, BirthyearTeacher, Gender) FROM '/home/ubuntu/data/Teachers.table' DELIMITER ',' CSV HEADER;
-COPY Courses(CourseId, CourseName, CourseDescription,DegreeId,ECTS) FROM '/home/ubuntu/data/Courses.table' DELIMITER ',' CSV HEADER;
-COPY CourseOffers(CourseOfferId, CourseId, Year, Quartile) FROM '/home/ubuntu/data/CourseOfferId.table' DELIMITER ',' CSV HEADER;
-COPY TeacherAssignmentsToCourses(CourseOfferId, TeacherId) FROM '/home/ubuntu/data/TeacherAssignments.table' DELIMITER ',' CSV HEADER;
+COPY Students(StudentId, StudentName, Address, BirthyearStudent, Gender) FROM '/home/student/Downloads/tables-500/Students.table' DELIMITER ',' CSV HEADER;
+COPY StudentRegistrationsToDegrees(StudentRegistrationId, StudentId, DegreeId, RegistrationYear) FROM '/home/student/Downloads/tables-500/StudentRegistrationsToDegrees.table' DELIMITER ',' CSV HEADER;
+COPY Teachers(TeacherId, TeacherName, Address, BirthyearTeacher, Gender) FROM '/home/student/Downloads/tables-500/Teachers.table' DELIMITER ',' CSV HEADER;
+COPY Courses(CourseId, CourseName, CourseDescription,DegreeId,ETCS) FROM '/home/student/Downloads/tables-500/Courses.table' DELIMITER ',' CSV HEADER;
+COPY CourseOffers(CourseOfferId, CourseId, Year, Quartile) FROM '/home/student/Downloads/tables-500/CourseOffers.table' DELIMITER ',' CSV HEADER;
+COPY TeacherAssignmentsToCourses(CourseOfferId, TeacherId) FROM '/home/student/Downloads/tables-500/TeacherAssignmentsToCourses.table' DELIMITER ',' CSV HEADER;
 COPY StudentAssistants(CourseOfferId, StudentRegistrationId) FROM '/home/student/Downloads/tables-500/StudentAssistants.table' DELIMITER ',' CSV HEADER;
-COPY CourseRegistrations(CourseOfferId, StudentRegistrationId, Grade) FROM '/home/ubuntu/data/CourseRegistrations.table' DELIMITER ',' CSV HEADER;
+COPY CourseRegistrations(CourseOfferId, StudentRegistrationId, Grade) FROM '/home/student/Downloads/tables-500/CourseRegistrations.table' DELIMITER ',' CSV HEADER;
 
 ANALYZE VERBOSE
