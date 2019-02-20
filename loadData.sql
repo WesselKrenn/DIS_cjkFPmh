@@ -18,4 +18,13 @@ COPY TeacherAssignmentsToCourses(CourseOfferId, TeacherId) FROM '/home/student/D
 COPY StudentAssistants(CourseOfferId, StudentRegistrationId) FROM '/home/student/Downloads/tables-500/StudentAssistants.table' DELIMITER ',' CSV HEADER;
 COPY CourseRegistrations(CourseOfferId, StudentRegistrationId, Grade) FROM '/home/student/Downloads/tables-500/CourseRegistrations.table' DELIMITER ',' CSV HEADER;
 
+ALTER TABLE Students add primary key (StudentId);
+ALTER TABLE Degrees add primary key (DegreeId);
+ALTER TABLE Teachers add primary key (TeacherId);
+ALTER TABLE Courses add primary key (CourseId);
+ALTER TABLE CourseOffers add primary key (CourseOffers);
+ALTER TABLE StudentRegistrationsToDegrees(StudentRegistrationId);
+
+
+
 ANALYZE VERBOSE
