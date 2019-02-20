@@ -11,4 +11,4 @@ CREATE UNLOGGED TABLE Courses(CourseId int, CourseName varchar(50), CourseDescri
 CREATE UNLOGGED TABLE CourseOffers(CourseOfferId int, CourseId int, Year int, Quartile int);
 CREATE UNLOGGED TABLE TeacherAssignmentsToCourses(CourseOfferId int, TeacherId int);
 CREATE UNLOGGED TABLE StudentAssistants(CourseOfferId int, StudentRegistrationId int);
-CREATE UNLOGGED TABLE CourseRegistrations(CourseOfferId int, StudentRegistrationId int, Grade varchar(4);
+CREATE UNLOGGED TABLE CourseRegistrations(CourseOfferId int, StudentRegistrationId int, Grade int);
