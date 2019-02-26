@@ -1,4 +1,4 @@
 -- here you will write the three queries requested in Question 1. Each query should be in a single line, i.e., do not break long queries to more lines.
-SELECT 'Replace this line with query 1';
-SELECT 'Replace this line with query 2';
+SELECT co.CourseOfferId, c.CourseId, Year, Quartile, CourseName, CourseDescription, d.DegreeId, ECTS, Dept, DegreeDescription, TotalECTS, t.TeacherId, TeacherName, Address, BirthyearTeacher, Gender FROM courseoffers co, courses c, degrees d, teachers t, teacherassignmentstocourses tatc WHERE co.courseofferid = 1 and co.courseid = c.courseid and d.degreeid = c.degreeid and t.teacherid = tatc.teacherid and tatc.courseofferid = co.courseofferid;
+SELECT co.courseofferid, co.courseid, year, Quartile, s.studentid, studentname, address, birthyearstudent, gender, d.degreeid, dept, DegreeDescription, TotalECTS FROM studentregistrationstodegrees srd, studentassistants sa, courseoffers co, students s, degrees d WHERE sa.studentregistrationid = 3 and sa.courseofferid = co.courseofferid and s.studentID = srd.studentid and d.degreeid = srd.degreeid and srd.studentregistrationid = sa.studentregistrationid;
 SELECT avg(Grade) FROM CourseRegistrations WHERE StudentRegistrationId = 140;
