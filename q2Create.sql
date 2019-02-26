@@ -4,4 +4,4 @@
 -- Remember that the database (including the auxiliary structures) needs to be less than 11 GB.
 -- This file will be executed with postgres -d uni -f q2Create.sql 
 -- Example:
-CREATE INDEX IDX_PHONEBOOK ON MyPhonebook(name);
+CREATE MATERIALIZED VIEW PersonCredits(StudentRegId, ECTS) AS (SELECT StudentRegistrationId, sum(ECTS) FROM CourseRegistrations cr, CourseOffers co, Courses c WHERE cr.CourseOfferId = co.CourseOfferId and co.CourseId = c.CourseId GROUP BY StudentRegistrationId); 
