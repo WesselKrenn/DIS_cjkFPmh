@@ -7,7 +7,7 @@ with PassedCourses(CourseName, Grade, Year, Quartile, CourseOfferId) as (SELECT 
 SELECT 0;
 SELECT 0;
 with GenPerDept(amount, gen) as (SELECT count(Gender), Gender FROM Students s, StudentRegistrationsToDegrees srd, degrees d WHERE Dept = %1% and d.DegreeId = srd.DegreeId and s.StudentId = srd.StudentId GROUP BY Gender) SELECT 100*amount(SELECT sum(amount) FROM GenPerDept) FROM GenPerDept WHERE Gen = 'F'; 
-SELECT 0;
+with AmountPassed(amount, courseid) as (SELECT count(Grade), c.CourseId FROM Courses c, CourseOffers co, CourseRegistrations cr WHERE Grade >= %1% and c.courseid = co.courseid and co.courseofferid = cr.courseofferid GROUP BY c.CourseID), AmountFailed(amount, courseid) as (SELECT count(Grade), c.CourseId FROM Courses c, CourseOffers co, CourseRegistrations cr WHERE Grade < %1% and c.courseid = co.courseid and co.courseofferid = cr.courseofferid GROUP BY c.CourseID) SELECT ap.CourseId, 100*ap.amount/(af.amount + ap.amount) FROM AmountFailed af, AmountPassed ap WHERE ap.courseid = af.courseid ORDER BY ap.courseid;
 SELECT 0;
 SELECT 0;
 SELECT 0;
