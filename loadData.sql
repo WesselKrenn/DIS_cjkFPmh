@@ -22,7 +22,7 @@ ALTER TABLE Students add primary key (StudentId);
 ALTER TABLE Degrees add primary key (DegreeId);
 ALTER TABLE Teachers add primary key (TeacherId);
 ALTER TABLE Courses add primary key (CourseId);
-ALTER TABLE CourseOffers add primary key (CourseOffers);
+ALTER TABLE CourseOffers add primary key (CourseOfferId);
 ALTER TABLE StudentRegistrationsToDegrees(StudentRegistrationId);
 
 
