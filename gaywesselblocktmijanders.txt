@@ -3,3 +3,4 @@ with activestudents(StudentregistrationId) as (SELECT StudentregistrationId FROM
 
 
 
+fuck this shit
