@@ -1,4 +1,5 @@
-with activestudents(StudentregistrationId) as (SELECT StudentregistrationId FROM Degrees d INNER JOIN  Courses c ON (d.degreeid= c.degreeid) INNER JOIN Courseoffers co ON ( c.courseID = co.courseId) INNER JOIN Courseregistrations cr ON (co.Courseofferid = cr.courseofferid) GROUP BY StudentregistrationId HAVING totalECTS < sum(ECTS)) SELECT 100*count(case when gender = 'f' then 1.0 end)/count(*) FROM activestudents a INNER JOIN StudenregistrationsToDegrees srd ON (a.Studentregistrationid = srd.studentregistrationid) INNER JOIN Students s ON (srd.StudentId = s.StudentId) GROUP BY degreeId;
+with activestudents(StudentregistrationId) as (SELECT StudentregistrationId FROM Degrees d INNER JOIN  Courses c ON (d.degreeid= c.degreeid) INNER JOIN Courseoffers co ON ( c.courseID = co.courseId) INNER JOIN Courseregistrations cr ON (co.Courseofferid = cr.courseofferid) GROUP BY StudentregistrationId HAVING max(totalECTS) < sum(ECTS)) SELECT degreeId, 100*count(case when gender = 'F' then 1.0 end)/count(*) FROM activestudents a INNER JOIN StudentregistrationsToDegrees srd ON (a.Studentregistrationid = srd.studentregistrationid) INNER JOIN Students s ON (srd.StudentId = s.StudentId) GROUP BY degreeId;
+
 
 
 
