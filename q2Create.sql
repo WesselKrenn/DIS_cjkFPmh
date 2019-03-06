@@ -4,22 +4,33 @@
 -- Remember that the database (including the auxiliary structures) needs to be less than 11 GB.
 -- This file will be executed with postgres -d uni -f q2Create.sql 
 -- Example:
-CREATE MATERIALIZED VIEW PersonCredits(StudentRegId, ECTS) AS (SELECT StudentRegistrationId, sum(ECTS) FROM CourseRegistrations cr, CourseOffers co, Courses c WHERE cr.CourseOfferId = co.CourseOfferId and co.CourseId = c.CourseId GROUP BY StudentRegistrationId); 
 
 
 
 -- From wesselkrenn (no number) and wesselkrenn2 :
 \timing
 CREATE INDEX idx_SRTD ON StudentRegistrationsToDegrees USING hash(StudentId);
-CREATE MATERIALIZED VIEW MaxGrades AS SELECT CourseRegistrations.CourseOfferId, MAX(Grade) AS MaxGrade FROM CourseRegistrations JOIN CourseOffers ON (CourseOffers.CourseOfferId = CourseRegistrations.CourseOfferId) WHERE Year = 2018 AND Quartile = 1 GROUP BY CourseRegistrations.CourseOfferId;
+CREATE MATERIALIZED VIEW MaxGrades AS SELECT CourseRegistrations.CourseOfferId, MAX(Grade) AS MaxGrade FROM CourseRegistrations INNER JOIN CourseOffers ON (CourseOffers.CourseOfferId = CourseRegistrations.CourseOfferId) WHERE Year = 2018 AND Quartile = 1 GROUP BY CourseRegistrations.CourseOfferId;
 
-CREATE MATERIALIZED VIEW GPAAndECTSCount AS SELECT StudentRegistrationsToDegrees.StudentRegistrationId, SUM(CourseRegistrations.Grade * Courses.ECTS) / CAST(SUM(Courses.ECTS) AS float) AS GPA, SUM(Courses.ECTS) AS TotalECTSAcquired FROM StudentRegistrationsToDegrees INNER JOIN CourseRegistrations on (StudentRegistrationsToDegrees.StudentRegistrationId = CourseRegistrations.StudentRegistrationId) INNER JOIN CourseOffers on (CourseRegistrations.CourseOfferId = CourseOffers.CourseOfferId) INNER JOIN Courses on (CourseOffers.COurseId = Courses.CourseId) INNER JOIN Degrees on (Courses.DegreeId = Degrees.DegreeId) WHERE (CourseRegistrations.Grade > 5.0) GROUP BY StudentRegistrationsToDegrees.StudentRegistrationId;
+--CREATE MATERIALIZED VIEW GPAAndECTSCount AS SELECT StudentRegistrationsToDegrees.StudentRegistrationId, SUM(CourseRegistrations.Grade * Courses.ECTS) / CAST(SUM(Courses.ECTS) AS float) AS GPA, SUM(Courses.ECTS) AS TotalECTSAcquired FROM StudentRegistrationsToDegrees INNER JOIN CourseRegistrations on (StudentRegistrationsToDegrees.StudentRegistrationId = CourseRegistrations.StudentRegistrationId) INNER JOIN CourseOffers on (CourseRegistrations.CourseOfferId = CourseOffers.CourseOfferId) INNER JOIN Courses on (CourseOffers.COurseId = Courses.CourseId) INNER JOIN Degrees on (Courses.DegreeId = Degrees.DegreeId) WHERE (CourseRegistrations.Grade > 5.0) GROUP BY StudentRegistrationsToDegrees.StudentRegistrationId;
 
-CREATE MATERIALIZED VIEW ActiveStudents AS 
+CREATE VIEW PassedCourses AS (
+  SELECT * FROM courseregistration WHERE Grade >= 5);
 
-SELECT GPAandECTSCount.StudentRegistrationId, StudentRegistrationsToDegrees.StudentId, Students.Gender, StudentRegistrationsToDegrees.DegreeId
-FROM GPAAndECTSCount INNER JOIN StudentRegistrationsToDegrees on (GPAAndECTSCount.StudentRegistrationId = StudentRegistrationsToDegrees.StudentRegistrationId) INNER JOIN Students on (StudentRegistrationsToDegrees.StudentId = Students.StudentId) INNER JOIN Degrees on (StudentRegistrationsToDegrees.DegreeId = Degrees.DegreeId)
-WHERE GPAAndECTSCount.TotalECTSAcquired < Degrees.TotalECTS;
+CREATE MATERIALIZED VIEW PassedCoursesPerStudent AS (
+    SELECT StudentId, C.CourseId, Grade, ECTS FROM Courses c INNER JOIN CourseOffers co ON (c.courseid = co.courseid)
+                                                             INNER JOIN PassedCourses pc ON (co.courseofferid = pc.courseofferid)
+                                                             INNER JOIN StudentRegistrationsToDegrees srd ON (srd.StudentRegistrationId = cr.StudentRegistrationID)
+    WHERE Grade >= 5
+    
+);
+
+
+CREATE MATERIALIZED VIEW StudentGPA AS (
+    SELECT StudentId, SUM(ECTS * Grade) / CAST (SUM(ECTS) AS DECIMAL) AS GPA FROM PassedCoursesPerStudent
+    GROUP BY StudentId
+);
+
 
 
 
