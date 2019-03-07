@@ -32,7 +32,7 @@ FROM Students INNER JOIN StudentRegistrationsToDegrees on (Students.StudentId = 
 WHERE (Degrees.Dept = %1%);
 -- Q5
 -- Takes almost 2 minutes (executed 5 times so still too slow)
-SELECT CourseId, COUNT(Grade), COUNT(CASE WHEN Grade >= 5 THEN 1 END), CAST(COUNT(CASE WHEN Grade >= 5 THEN 1 END) AS FLOAT) / COUNT(Grade) AS percentagePassing FROM CourseRegistrations INNER JOIN CourseOffers ON (CourseRegistrations.CourseOfferId = CourseOffers.CourseOfferId) WHERE Grade IS NOT NULL GROUP BY CourseId;
+SELECT CourseId, COUNT(CASE WHEN Grade >= 5 THEN 1 END)*100/ (cast(Count(Grade) as float)) AS percentagePassing FROM CourseOfferRegistrations WHERE Grade IS NOT NULL GROUP BY CourseId;
 -- Q6
 -- takes 33 seconds (executed 3 times (1, 2, 3)) (total ~90 seconds)
 SELECT * FROM (SELECT StudentRegistrationId, COUNT(CASE WHEN CourseRegistrations.Grade = MaxGrades.MaxGrade THEN 1 END) AS NrOfExcellentCourses FROM CourseRegistrations INNER JOIN MaxGrades ON (CourseRegistrations.CourseOfferId = MaxGrades.CourseOfferId) GROUP BY StudentRegistrationId) AS s WHERE nrOfExcellentCourses >= %1%;
