@@ -1,43 +1,22 @@
--- this file should load all data in the previously-created tables
--- the data will be stored under /mnt/ramdisk/tables
--- for example, the Students file is under /mnt/ramdisk/tables/Students.table 
--- The files of the folder are as follows (mind the lower-case/upper-case): 
---   CourseOffers.table, CourseRegistrations.table, Courses.table, Degrees.table
---   StudentAssistants.table, StudentRegistrationsToDegrees.table, Students.table
---   TeacherAssignmentsToCourses.table, Teachers.table
--- Don't forget to analyze at the end. It can make a difference in query performance.
--- Example:
-\timing
-COPY Degrees(DegreeId, Dept, DegreeDescription, TotalECTS) FROM '/home/student/2ID70/tables/Degrees.table' DELIMITER ',' CSV HEADER;
-COPY Students(StudentId, StudentName, Address, BirthyearStudent, Gender) FROM '/home/student/2ID70/tables/Students.table' DELIMITER ',' CSV HEADER;
-COPY StudentRegistrationsToDegrees(StudentRegistrationId, StudentId, DegreeId, RegistrationYear) FROM '/home/student/2ID70/tables/StudentRegistrationsToDegrees.table' DELIMITER ',' CSV HEADER;
-COPY Teachers(TeacherId, TeacherName, Address, BirthyearTeacher, Gender) FROM '/home/student/2ID70/tables/Teachers.table' DELIMITER ',' CSV HEADER;
-COPY Courses(CourseId, CourseName, CourseDescription,DegreeId,ECTS) FROM '/home/student/2ID70/tables/Courses.table' DELIMITER ',' CSV HEADER;
-COPY CourseOffers(CourseOfferId, CourseId, Year, Quartile) FROM '/home/student/2ID70/tables/CourseOffers.table' DELIMITER ',' CSV HEADER;
-COPY TeacherAssignmentsToCourses(CourseOfferId, TeacherId) FROM '/home/student/2ID70/tables/TeacherAssignmentsToCourses.table' DELIMITER ',' CSV HEADER;
-COPY StudentAssistants(CourseOfferId, StudentRegistrationId) FROM '/home/student/2ID70/tables/StudentAssistants.table' DELIMITER ',' CSV HEADER;
-COPY CourseRegistrations(CourseOfferId, StudentRegistrationId, Grade) FROM '/home/student/2ID70/tables/CourseRegistrations.table' DELIMITER ',' CSV HEADER  NULL 'null';
 
+COPY Degrees(DegreeId, Dept, DegreeDescription, TotalECTS) FROM '/mnt/ramdisk/tables/CourseOffers.table' DELIMITER ',' CSV HEADER;
+COPY Students(StudentId, StudentName, Address, BirthyearStudent, Gender) FROM '/mnt/ramdisk/tables/CourseOffers.table' DELIMITER ',' CSV HEADER;
+COPY StudentRegistrationsToDegrees(StudentRegistrationId, StudentId, DegreeId, RegistrationYear) FROM '/mnt/ramdisk/tables/CourseOffers.table' DELIMITER ',' CSV HEADER;
+COPY Teachers(TeacherId, TeacherName, Address, BirthyearTeacher, Gender) FROM '/mnt/ramdisk/tables/CourseOffers.table' DELIMITER ',' CSV HEADER;
+COPY Courses(CourseId, CourseName, CourseDescription,DegreeId,ECTS) FROM '/mnt/ramdisk/tables/CourseOffers.table' DELIMITER ',' CSV HEADER;
+COPY CourseOffers(CourseOfferId, CourseId, Year, Quartile) FROM '/mnt/ramdisk/tables/CourseOffers.table' DELIMITER ',' CSV HEADER;
+COPY TeacherAssignmentsToCourses(CourseOfferId, TeacherId) FROM '/mnt/ramdisk/tables/CourseOffers.table' DELIMITER ',' CSV HEADER;
+COPY StudentAssistants(CourseOfferId, StudentRegistrationId) FROM '/mnt/ramdisk/tables/CourseOffers.table' DELIMITER ',' CSV HEADER;
+COPY CourseRegistrations(CourseOfferId, StudentRegistrationId, Grade) FROM '/mnt/ramdisk/tables/CourseOffers.table' DELIMITER ',' CSV HEADER NULL 'null';
 CREATE UNLOGGED TABLE CourseOffers2 AS SELECT co.CourseOfferId, co.CourseId, Year, Quartile, CourseName, ECTS FROM CourseOffers co INNER JOIN Courses c ON (co.courseid = c.courseid);
-
 DROP TABLE CourseOffers;
-
 CREATE UNLOGGED TABLE CourseOfferRegistrations AS SELECT CourseRegistrations.CourseOfferId, CourseRegistrations.StudentRegistrationId, CourseRegistrations.Grade, CourseOffers2.CourseId, CourseOffers2.Year, Courseoffers2.Quartile, CourseOffers2.CourseName, ECTS FROM CourseRegistrations, CourseOffers2 WHERE CourseRegistrations.CourseOfferId = CourseOffers2.CourseOfferId;
-
 DROP TABLE CourseRegistrations;
 DROP TABLE CourseOffers2;
-
---CREATE UNLOGGED TABLE CourseOfferRegistrations2 AS SELECT cor.CourseOfferId, cor.StudentRegistrationId, cor.Grade, cor.CourseId, cor.Year, cor.Quartile, c.CourseName FROM CourseOfferRegistrations cor, Courses c WHERE CourseRegistrations.CourseOfferId = CourseOffers.CourseOfferId;
-
-
-
 ALTER TABLE Students add primary key (StudentId);
 ALTER TABLE Degrees add primary key (DegreeId);
 ALTER TABLE Teachers add primary key (TeacherId);
 ALTER TABLE Courses add primary key (CourseId);
 ALTER TABLE StudentRegistrationsToDegrees add primary key (StudentRegistrationId);
 ALTER TABLE CourseOfferRegistrations add primary key (StudentRegistrationId, CourseOfferId);
-
-
-
 ANALYZE VERBOSE
