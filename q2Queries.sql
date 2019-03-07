@@ -29,16 +29,16 @@ GROUP BY Degrees.DegreeId;
 -- takes a 2.5 seconds (25 seconds total)
 SELECT (cast(SUM(CASE WHEN Students.Gender = 'F' THEN 1 ELSE 0 END) as float) / COUNT(Students.Gender)) as female_percent
 FROM Students INNER JOIN StudentRegistrationsToDegrees on (Students.StudentId = StudentRegistrationsToDegrees.StudentId) INNER JOIN Degrees on (StudentRegistrationsToDegrees.DegreeId = Degrees.DegreeId)
-WHERE (Degrees.Dept = %1%);
+WHERE (Degrees.Dept =  'standard a');
 -- Q5
 -- Takes almost 2 minutes (executed 5 times so still too slow)
 SELECT CourseId, COUNT(CASE WHEN Grade >= 5 THEN 1 END)*100/ (cast(Count(Grade) as float)) AS percentagePassing FROM CourseOfferRegistrations WHERE Grade IS NOT NULL GROUP BY CourseId;
 -- Q6
 -- takes 33 seconds (executed 3 times (1, 2, 3)) (total ~90 seconds)
-SELECT * FROM (SELECT StudentRegistrationId, COUNT(CASE WHEN CourseRegistrations.Grade = MaxGrades.MaxGrade THEN 1 END) AS NrOfExcellentCourses FROM CourseRegistrations INNER JOIN MaxGrades ON (CourseRegistrations.CourseOfferId = MaxGrades.CourseOfferId) GROUP BY StudentRegistrationId) AS s WHERE nrOfExcellentCourses >= %1%;
+SELECT * FROM (SELECT StudentRegistrationId, COUNT(CASE WHEN CourseOfferRegistrations.Grade = MaxGrades.MaxGrade THEN 1 END) AS NrOfExcellentCourses FROM CourseOfferRegistrations INNER JOIN MaxGrades ON (CourseOfferRegistrations.CourseOfferId = MaxGrades.CourseOfferId) GROUP BY StudentRegistrationId) AS s WHERE nrOfExcellentCourses >= 2;
 -- Q7 
 -- check for actieve studenten moet nog toegevoegd worden
 SELECT StudentRegistrationsToDegrees.DegreeId, Students.BirthyearStudent, Students.Gender, AVG(CourseRegistrations.Grade) FROM StudentRegistrationsToDegrees INNER JOIN Students on (StudentRegistrationsToDegrees.StudentId = Students.StudentId) INNER JOIN CourseRegistrations on (StudentRegistrationsToDegrees.StudentRegistrationId = CourseRegistrations.StudentRegistrationId) GROUP BY (StudentRegistrationsToDegrees.DegreeId, Students.BirthyearStudent, Students.Gender);
 -- Q8
 -- took 3 minutes yesterday, today I ran out of space                                                                                    --
-SELECT CourseName, Year, Quartile FROM (SELECT Courses.CourseId, Courses.CourseName, Year, Quartile FROM Courses INNER JOIN CourseOfferRegistrations on (Courses.CourseId = CourseOfferRegistrations.CourseId) INNER JOIN StudentAssistants on (CourseOfferRegistrations.CourseOfferId = StudentAssistants.CourseOfferId) GROUP BY Courses.CourseId, Year, Quartile HAVING COUNT(CourseOfferRegistrations.CourseOfferId) /50 +1 > COUNT(StudentAssistants.CourseOfferId)) as s;
+with reee(courseofferid, year, quartile, courseid, cnt) as (SELECT courseofferid, avg(year), avg(quartile), avg(courseid), count(studentregistrationid) FROM courseofferregistrations GROUP BY courseofferid), reee2(courseofferid, cnt2) as (SELECT courseofferid, count(studentregistrationid) FROM studentassistants GROUP BY courseofferid) SELECT coursename, year, quartile FROM reee r INNER JOIN reee2 r2 ON(r.courseofferid = r2.courseofferid) INNER JOIN courses c ON (r.courseid = c.courseid)  WHERE cnt / 50 + 1 > cnt2;
