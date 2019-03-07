@@ -1,8 +1,8 @@
-SELECT CourseName, Grade FROM PassedCoursesPerStudent WHERE DegreeId = %2% AND StudentId = %1% Order By year, quartile, courseofferid;
+with CurrentStudent(StudentRegistrationId) as (SELECT StudentRegistrationId FROM StudentRegistrationsToDegrees WHERE degreeid = 1099 and studentid = 2) SELECT CourseName, Grade FROM CourseRegistrations cr INNER JOIN CurrentStudent srd ON (cr.StudentRegistrationId = srd.StudentRegistrationId) INNER JOIN CourseOffers co ON (co.courseofferid = cr.courseofferid) WHERE grade >=5 ORDER BY year, quartile, co.courseofferid;
 SELECT 0;
-SELECT Degrees.DegreeId as degreeid, (cast(SUM(CASE WHEN Students.Gender = 'F' THEN 1 ELSE 0 END) as float) / COUNT(Students.Gender)) as percentage FROM Students INNER JOIN StudentRegistrationsToDegrees on (Students.StudentId = StudentRegistrationsToDegrees.StudentId) INNER JOIN Degrees on (StudentRegistrationsToDegrees.DegreeId = Degrees.DegreeId) GROUP BY Degrees.DegreeId;
-SELECT (cast(SUM(CASE WHEN Students.Gender = 'F' THEN 1 ELSE 0 END) as float) / COUNT(Students.Gender)) as percentage FROM Students INNER JOIN StudentRegistrationsToDegrees on (Students.StudentId = StudentRegistrationsToDegrees.StudentId) INNER JOIN Degrees on (StudentRegistrationsToDegrees.DegreeId = Degrees.DegreeId) WHERE (Degrees.Dept = %1%);
 SELECT 0;
-SELECT StudentRegistrationId, COUNT(CASE WHEN CourseRegistrations.Grade = MaxGrades.MaxGrade THEN 1 END) AS numberOfCoursesWhereExcellent FROM CourseOfferRegistrations cor INNER JOIN MaxGrades ON (cor.CourseOfferId = MaxGrades.CourseOfferId) GROUP BY StudentRegistrationId) having numberrOfCoursesWhereExcellent >= %1%;
 SELECT 0;
-with studentcount(courseofferid, year, quartile, coursename, cnt) as (SELECT courseofferid, cast(max(year) as int),cast(max(quartile) as int), coursename, count(studentregistrationid) FROM courseofferregistrations GROUP BY courseofferid, coursename), assistantcount(courseofferid, cnt2) as (SELECT courseofferid, count(Studentregistrationid) FROM studentassistants GROUP BY courseofferid) SELECT courseName, year, quartile FROM studentcount s INNER JOIN assistantcount a ON (s.courseofferid = a.courseofferid) Order by s.courseofferid;
+SELECT 0;
+SELECT 0;
+SELECT 0;
+SELECT 0;
