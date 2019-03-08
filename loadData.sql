@@ -17,4 +17,4 @@ ALTER TABLE Teachers add primary key (TeacherId);
 ALTER TABLE Courses add primary key (CourseId);
 ALTER TABLE StudentRegistrationsToDegrees add primary key (StudentRegistrationId);
 ALTER TABLE CourseRegistrations add primary key (StudentRegistrationId, CourseOfferId);
-ANALYZE VERBOSE
+ANALYZE VERBOSE;
