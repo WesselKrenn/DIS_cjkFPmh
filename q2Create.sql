@@ -1,1 +1,1 @@
-CREATE VIEW nothing as (SELECT 0);
+CREATE INDEX idx_SRTD ON StudentRegistrationsToDegrees USING hash(StudentId);
