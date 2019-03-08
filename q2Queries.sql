@@ -2,7 +2,7 @@ with CurrentStudent(StudentRegistrationId) as (SELECT StudentRegistrationId FROM
 SELECT 0;
 SELECT 0;
 SELECT (cast(SUM(CASE WHEN s.Gender = 'F' THEN 1 ELSE 0 END) as float) / COUNT(s.Gender)) as percentage FROM Students s INNER JOIN StudentRegistrationsToDegrees srd on (s.StudentId = srd.StudentId) INNER JOIN Degrees d on (srd.DegreeId = d.DegreeId) WHERE (d.Dept =  %1%);
-SELECT 0;
-SELECT * FROM(SELECT StudentId, COUNT(CASE WHEN cr.Grade = mg.MaxGrade THEN 1 END) AS numberOfCoursesWhereExcellent FROM CourseRegistrations cr INNER JOIN MaxGradesQ1 mg ON (cr.CourseOfferId = mg.CourseOfferId) GROUP BY StudentId) as subquery WHERE numberOfCoursesWhereExcellent >= 3;
+SELECT CourseId, COUNT(CASE WHEN Grade >= 5 THEN 1 END)*100/ (cast(Count(Grade) as float)) AS percentagePassing FROM CourseRegistrations WHERE Grade IS NOT NULL GROUP BY CourseId;
+SELECT * FROM(SELECT StudentId, COUNT(CASE WHEN cr.Grade = mg.MaxGrade THEN 1 END) AS numberOfCoursesWhereExcellent FROM CourseRegistrations cr INNER JOIN MaxGradesQ1 mg ON (cr.CourseOfferId = mg.CourseOfferId) GROUP BY StudentId) as subquery WHERE numberOfCoursesWhereExcellent >= %1%;
 SELECT 0;
 SELECT 0;
