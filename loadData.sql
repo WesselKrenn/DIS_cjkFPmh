@@ -9,7 +9,7 @@ COPY StudentAssistants(CourseOfferId, StudentRegistrationId) FROM '/mnt/ramdisk/
 COPY temp_CourseRegistrations(CourseOfferId, StudentRegistrationId, Grade) FROM '/mnt/ramdisk/tables/CourseRegistrations.table' DELIMITER ',' CSV HEADER NULL 'null';
 CREATE UNLOGGED TABLE CourseOffers AS SELECT co.*, CourseName FROM temp_CourseOffers co INNER JOIN Courses c ON (co.courseid = c.courseid);
 DROP TABLE temp_CourseOffers;
-CREATE UNLOGGED TABLE CourseRegistrations AS SELECT cr.*, srd.StudentId, CourseId FROM temp_CourseRegistrations cr, CourseOffers co, StudentRegistrationsToDegrees srd WHERE cr.CourseOfferId = co.CourseOfferId and cr.StudentRegistrationId = srd.StudentRegistrationId;
+SELECT cr.*, srd.StudentId, CourseId INTO CourseRegistrations FROM temp_CourseRegistrations cr, CourseOffers co, StudentRegistrationsToDegrees srd WHERE cr.CourseOfferId = co.CourseOfferId and cr.StudentRegistrationId = srd.StudentRegistrationId;
 DROP TABLE temp_CourseRegistrations;
 ALTER TABLE Students add primary key (StudentId);
 ALTER TABLE Degrees add primary key (DegreeId);
