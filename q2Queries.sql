@@ -3,6 +3,6 @@ SELECT 0;
 SELECT 0;
 SELECT (cast(SUM(CASE WHEN s.Gender = 'F' THEN 1 ELSE 0 END) as float) / COUNT(s.Gender)) as percentage FROM Students s INNER JOIN StudentRegistrationsToDegrees srd on (s.StudentId = srd.StudentId) INNER JOIN Degrees d on (srd.DegreeId = d.DegreeId) WHERE (d.Dept =  %1%);
 SELECT 0;
-SELECT 0;
+SELECT * FROM(SELECT StudentId, COUNT(CASE WHEN cr.Grade = mg.MaxGrade THEN 1 END) AS numberOfCoursesWhereExcellent FROM CourseRegistrations cr INNER JOIN MaxGradesQ1 mg ON (cr.CourseOfferId = mg.CourseOfferId) GROUP BY StudentId) as subquery WHERE numberOfCoursesWhereExcellent >= 3;
 SELECT 0;
 SELECT 0;
