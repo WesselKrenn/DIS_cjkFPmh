@@ -7,7 +7,7 @@ COPY temp_CourseOffers(CourseOfferId, CourseId, Year, Quartile) FROM '/mnt/ramdi
 COPY TeacherAssignmentsToCourses(CourseOfferId, TeacherId) FROM '/mnt/ramdisk/tables/TeacherAssignmentToCourses.table' DELIMITER ',' CSV HEADER;
 COPY StudentAssistants(CourseOfferId, StudentRegistrationId) FROM '/mnt/ramdisk/tables/StudentAssistants.table' DELIMITER ',' CSV HEADER;
 COPY temp_CourseRegistrations(CourseOfferId, StudentRegistrationId, Grade) FROM '/mnt/ramdisk/tables/CourseRegistrations.table' DELIMITER ',' CSV HEADER NULL 'null';
-CREATE UNLOGGED TABLE CourseOffers AS SELECT co.*, CourseName FROM temp_CourseOffers co INNER JOIN Courses c ON (co.courseid = c.courseid);
+SELECT co.*, CourseName INTO CourseOffers FROM temp_CourseOffers co INNER JOIN Courses c ON (co.courseid = c.courseid);
 DROP TABLE temp_CourseOffers;
 SELECT cr.*, srd.StudentId, CourseId INTO CourseRegistrations FROM temp_CourseRegistrations cr, CourseOffers co, StudentRegistrationsToDegrees srd WHERE cr.CourseOfferId = co.CourseOfferId and cr.StudentRegistrationId = srd.StudentRegistrationId;
 DROP TABLE temp_CourseRegistrations;
