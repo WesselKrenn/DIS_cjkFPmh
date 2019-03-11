@@ -8,3 +8,4 @@ CREATE MATERIALIZED VIEW gotdegreeNoFail(studentId, studentregistrationid, GPA) 
 CREATE VIEW not_taken(studentregistrationid, sumECTS) AS (SELECT studentregistrationid, 0 FROM (SELECT studentregistrationid FROM studentregistrationstodegrees srtd EXCEPT SELECT studentregistrationid FROM pointsperstudent) AS new);
 CREATE MATERIALIZED VIEW ActiveStudent(studentId, DegreeId) AS (Select srtd.studentid, d.degreeid From pointsperstudent pps, studentregistrationstodegrees srtd, degrees d where pps.studentregistrationid = srtd.studentregistrationid and d.degreeid = srtd.degreeid and d.totalects > pps.sumects UNION SELECT srtd.studentid, srtd.degreeid FROM studentregistrationstodegrees srtd, not_taken nt WHERE srtd.studentregistrationid = nt.studentregistrationid);
 CREATE INDEX idx_activestud on ActiveStudent(studentId);
+CREATE INDEX idx_studidpointsper on pointsperstudent(studentId);
