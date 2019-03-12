@@ -1,5 +1,5 @@
 with CurrentStudent(StudentRegistrationId) as (SELECT StudentRegistrationId FROM StudentRegistrationsToDegrees WHERE degreeid = %2% and studentid = %1%) SELECT CourseName, grade FROM CourseRegistrations cr INNER JOIN CurrentStudent srd ON (cr.StudentRegistrationId = srd.StudentRegistrationId) INNER JOIN CourseOffers co ON (co.courseofferid = cr.courseofferid) WHERE grade >=5 ORDER BY year, quartile, co.courseofferid;
-SELECT distinct gdnf.studentid from gotdegreenofail gdnf where gdnf.GPA > %1% order by gdnf.studentid;
+SELECT gdnf.studentid from gotdegreenofail gdnf where gdnf.GPA > %1% order by gdnf.studentid;
 SELECT ast.degreeid, count(case when s.gender = 'F' then 1 end)/count(s.studentid)::float as femalePercentage from students s, activestudent ast where s.studentid = ast.studentid group by ast.degreeid order by ast.degreeid;
 SELECT (cast(SUM(CASE WHEN s.Gender = 'F' THEN 1 ELSE 0 END) as float) / COUNT(s.Gender)) as percentage FROM Students s INNER JOIN StudentRegistrationsToDegrees srd on (s.StudentId = srd.StudentId) INNER JOIN Degrees d on (srd.DegreeId = d.DegreeId) WHERE (d.Dept =  %1%);
 SELECT CourseId, COUNT(CASE WHEN Grade >= %1% THEN 1 END)/ (cast(Count(Grade) as float)) AS percentagePassing FROM CourseRegistrations WHERE Grade IS NOT NULL GROUP BY CourseId;
